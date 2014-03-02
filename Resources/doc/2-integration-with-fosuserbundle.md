@@ -36,22 +36,35 @@ to the provider id in the "provider" section in ```config.yml```:
     class FacebookProvider implements UserProviderInterface
     {
         /**
-         * @var \Facebook
-         */
-        protected $facebook;
-        protected $userManager;
-        protected $validator;
+    		 * @var \FOS\FacebookBundle\Facebook\FacebookSessionPersistence
+    		 */
+    		protected $facebook;
+    		
+    		/**
+    		 * @var \FOS\UserBundle\Doctrine\UserManager $userManager
+    		 */
+    		protected $userManager;
+    		
+    		/**
+    		 * @var \Symfony\Component\Validator\Validator $validator
+    		 */
+    		protected $validator;
+    
+    		/**
+    		 * @var \FOS\UserBundle\Security\UserProvider $userProvider
+    		 */
+    		protected $userProvider;
 
         public function __construct(BaseFacebook $facebook, $userManager, $validator)
         {
             $this->facebook = $facebook;
-            $this->userManager = $userManager;
-            $this->validator = $validator;
+      			$this->userManager = $userManager;
+      			$this->validator = $validator;
         }
 
         public function supportsClass($class)
         {
-            return $this->userManager->supportsClass($class);
+            return $this->userProvider->supportsClass($class);
         }
 
         public function findUserByFbId($fbId)
